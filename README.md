@@ -1,1 +1,6 @@
 # transliter
+
+## requirements
+
+* uvicorn
+* fastapi
