@@ -1,36 +1,43 @@
-def transform_letter(letter):
-    # Словарь для соответствия клавиш
-    key_mapping = {
-        'a': 'ф', 'b': 'и', 'c': 'с', 'd': 'в', 'e': 'у',
-        'f': 'а', 'g': 'п', 'h': 'р', 'i': 'ш', 'j': 'о',
-        'k': 'л', 'l': 'д', 'm': 'ь', 'n': 'т', 'o': 'щ',
-        'p': 'з', 'q': 'й', 'r': 'к', 's': 'ы', 't': 'е',
-        'u': 'г', 'v': 'м', 'w': 'ц', 'x': 'ч', 'y': 'н',
-        'z': 'я', '@': '"', '#': '№', '$': ';', '^': ':',
-        '&': '?'
-    }
-    lower_cased = letter.lower()
+from typing import Union
+from fastapi import FastAPI
+from starlette.responses import JSONResponse
+from pydantic import BaseModel
+from transliter import *
 
-    # Преобразование буквы с учетом регистра
-    if lower_cased in key_mapping:
-        transformed = key_mapping[lower_cased]
-        return transformed.upper() if letter.isupper() else transformed
-    else:
-        return letter
+app = FastAPI()
 
-def transform_word(word):
-    # Преобразование каждой буквы в слове
-    transformed_word = ""
-    for letter in word:
-        transformed_word += transform_letter(letter)
-    return transformed_word
+@app.get("/")
+async def homepage():
+	return JSONResponse({'Hello': 'world'})
 
+@app.get("/calc")
+async def calc(a, b):
+	result = int(a)+int(b)
+	print('here')
+	return JSONResponse({'Hello': F'={result}'})
 
-def main():
-    input_word = input("Введите слово: ")
-    result = transform_word(input_word)
-    print(result)
+@app.get("/translit")
+async def translit(text):
+	result = transform_word(text)
+	print('here')
+	return JSONResponse({'result': F'{result}'})
 
+@app.get("/caps")
+async def caps_lock(text):
+	result = text.lower()
+	return JSONResponse({'result': F'{result}'})
 
-if __name__ == "__main__":
-    main()
+@app.get("/counter")
+async def counter(text):
+	result = text.lower()
+	return JSONResponse({'result': F'{result}'}) #Этот метод будет считать количество каждой из букв в тексте
+# text: "aa bb cc dd eeee"
+#
+#     {
+#         a: 2
+#         b: 2
+#         c: 2
+#         d: 2
+#         e: 4
+#     }
+
