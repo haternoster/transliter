@@ -25,6 +25,10 @@ def transform_word(word):
         transformed_word += transform_letter(letter)
     return transformed_word
 
+def word_counter(text):
+    number_of_words = len(text.split(" "))
+    return number_of_words
+
 
 
 def main():
