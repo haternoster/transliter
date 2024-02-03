@@ -36,3 +36,9 @@ async def caps_lock(text):
 async def counter(text):
     result = letter_count(text)
     return JSONResponse({'result': result})
+
+@app.get("/unique_words")
+async def unique_words(text):
+    result = word_counter(text)
+    return JSONResponse({"result": result})
+
