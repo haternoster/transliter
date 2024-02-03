@@ -1,3 +1,5 @@
+import re
+
 def transform_letter(letter):
     # Словарь для соответствия клавиш
     key_mapping = {
@@ -25,10 +27,20 @@ def transform_word(word):
         transformed_word += transform_letter(letter)
     return transformed_word
 
-def word_counter(text):
-    number_of_words = len(text.split(" "))
-    return number_of_words
 
+def replace_points_and_commas(text):
+    return re.sub(r"[,?!;.:…]", lambda g:"", text)
+
+
+def word_counter(text):
+
+    splited_words = replace_points_and_commas(text).split(" ")
+    result = 0
+    words = []
+    for word in splited_words:
+        if word.lower() not in words:
+            words += [word.lower()]
+    return len(words)
 
 
 def main():
